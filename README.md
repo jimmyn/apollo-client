@@ -35,7 +35,9 @@ const App = () => (
 render(<App />, document.getElementById('root'));
 ```
 
-## Usage
+## Mutations
+
+This package extends `useMutation` options allowing to update cached queries in one line of code
 
 ```typescript
 import React from 'react';
@@ -45,7 +47,9 @@ import {TodosList} from './TodosList';
 
 export const TodosSimple = () => {
   const {data} = useQuery(todosQuery);
-  const [createTodo] = useMutation(createTodoMutation, {updateQuery: todosQuery});
+  const [createTodo] = useMutation(createTodoMutation, {
+    updateQuery: todosQuery // <== notice updateQuery option
+  });
   const todos = data?.todos || [];
 
   const handleCreateTodo = () => {
