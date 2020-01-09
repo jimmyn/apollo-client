@@ -54,6 +54,14 @@ export const getOpTypeFromOperationName = (opName = ''): CacheOperationTypes => 
   return result;
 };
 
+export const updateExistingKeys = <T extends Item>(oldItem: T, newItem: T | undefined) => ({
+  ...oldItem,
+  ...pick(
+    newItem,
+    Object.keys(oldItem).filter(key => key !== '__typename')
+  )
+});
+
 export const getUpdater = <T extends Item>(
   opType: CacheOperationTypes,
   idField: string
@@ -73,16 +81,12 @@ export const getUpdater = <T extends Item>(
       return (currentValue, newItem) => {
         if (Array.isArray(currentValue)) {
           return newItem
-            ? currentValue.map(item => (item[idField] === newItem[idField] ? newItem : item))
+            ? currentValue.map(item =>
+                item[idField] === newItem[idField] ? updateExistingKeys<T>(item, newItem) : item
+              )
             : [...currentValue];
         } else {
-          return {
-            ...currentValue,
-            ...pick(
-              newItem,
-              Object.keys(currentValue).filter(key => key !== '__typename')
-            )
-          };
+          return updateExistingKeys(currentValue, newItem);
         }
       };
     case CacheOperationTypes.REMOVE:
@@ -126,7 +130,7 @@ type UpdateCacheOptions<TData = any> = OfflineOptions<TData> & {
   data: TData;
 };
 
-const updateCache = <TData = any>({
+export const updateCache = <TData = any>({
   client,
   data,
   idField,
@@ -164,6 +168,7 @@ const updateCache = <TData = any>({
     const opResultCachedValue = draft[queryField];
     const path = findArrayInObject(opResultCachedValue);
     const update = updaterFn(getValueByPath(opResultCachedValue, path), mutatedItem);
+    console.log(update);
     if (!path || path.length === 0) {
       draft[queryField] = update;
     } else {

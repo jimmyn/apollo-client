@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateCache should add item 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "On the road",
+      "user_id": 9,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-31",
+      "id": 26,
+      "title": "New post",
+      "user_id": 11,
+    },
+  ],
+}
+`;
+
+exports[`updateCache should remove item 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+  ],
+}
+`;
+
+exports[`updateCache should update item 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache should update item with mapResultToUpdate 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post with mapResultToUpdate",
+      "user_id": 9,
+    },
+  ],
+}
+`;
