@@ -29,7 +29,7 @@ export const getValueByPath = (obj: any, path?: string[]) => {
   if (!isObject(obj) || !path || path.length === 0) return obj;
   return path.reduce((acc, elem) => {
     const val = acc?.[elem];
-    if (val) return val;
+    if (val !== undefined) return val;
     return null;
   }, obj);
 };

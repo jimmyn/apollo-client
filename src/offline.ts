@@ -7,62 +7,18 @@ import {DataProxy} from 'apollo-cache';
 import ApolloClient from 'apollo-client';
 import {DocumentNode} from 'apollo-link';
 import {resultKeyNameFromField} from 'apollo-utilities';
+import {CacheOperationTypes, prefixesForAdd, prefixesForRemove, prefixesForUpdate} from './const';
+import {findArrayInObject, getValueByPath, pick, setValueByPath} from './utils';
 import {FieldNode, OperationDefinitionNode} from 'graphql';
 import produce from 'immer';
-import {findArrayInObject, getValueByPath, pick, setValueByPath} from './utils';
 
 type Item = {[key: string]: any};
-
-export enum CacheOperationTypes {
-  AUTO = 'auto',
-  ADD = 'add',
-  REMOVE = 'remove',
-  UPDATE = 'update'
-}
-
-const prefixesForRemove = [
-  'delete',
-  'deleted',
-  'discard',
-  'discarded',
-  'erase',
-  'erased',
-  'remove',
-  'removed'
-];
-
-const prefixesForUpdate = [
-  'update',
-  'updated',
-  'upsert',
-  'upserted',
-  'edit',
-  'edited',
-  'modify',
-  'modified',
-  'analyze',
-  'activate'
-];
-
-const prefixesForAdd = [
-  'create',
-  'created',
-  'put',
-  'set',
-  'add',
-  'added',
-  'new',
-  'insert',
-  'inserted',
-  'duplicate',
-  'import'
-];
 
 export type OfflineConfig = {
   prefixesForRemove?: string[];
   prefixesForUpdate?: string[];
   prefixesForAdd?: string[];
-  getIdFieldFromObject?: (item: Item) => string;
+  getIdFieldFromObject?(item: Item): string;
   idField?: string;
 };
 
@@ -144,10 +100,11 @@ export const getUpdater = <T extends Item>(
   }
 };
 
-export const getOperationFieldName = (operation: DocumentNode): string =>
-  resultKeyNameFromField(
+export const getOperationFieldName = (operation: DocumentNode): string => {
+  return resultKeyNameFromField(
     (operation.definitions[0] as OperationDefinitionNode).selectionSet.selections[0] as FieldNode
   );
+};
 
 export type QueryWithVariables<TVariables = OperationVariables> = {
   query: DocumentNode;

@@ -9,6 +9,7 @@ import * as ApolloReactHooks from '@apollo/react-hooks';
 import {getMutationOptions, getSubscriptionOptions, OfflineOptions, setConfig} from './offline';
 import {DocumentNode} from 'graphql';
 
+export * from './const';
 export * from '@apollo/react-hooks';
 
 export const setOfflineConfig = setConfig;
