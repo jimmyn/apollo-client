@@ -1,5 +1,5 @@
 import ApolloClient from 'apollo-boost';
-import {CacheOperationTypes} from 'const';
+import {OperationTypes} from 'const';
 import 'cross-fetch/polyfill';
 import {
   getOperationFieldName,
@@ -54,30 +54,30 @@ const newPost = Object.freeze({
 const posts = Object.freeze([post1, post2, post3]);
 
 test('getOpTypeFromOperationName', () => {
-  expect(getOpTypeFromOperationName('createPost')).toBe(CacheOperationTypes.ADD);
-  expect(getOpTypeFromOperationName('newPost')).toBe(CacheOperationTypes.ADD);
-  expect(getOpTypeFromOperationName('insertPost')).toBe(CacheOperationTypes.ADD);
-  expect(getOpTypeFromOperationName('updatePost')).toBe(CacheOperationTypes.UPDATE);
-  expect(getOpTypeFromOperationName('editPost')).toBe(CacheOperationTypes.UPDATE);
-  expect(getOpTypeFromOperationName('removePost')).toBe(CacheOperationTypes.REMOVE);
-  expect(getOpTypeFromOperationName('deletePost')).toBe(CacheOperationTypes.REMOVE);
+  expect(getOpTypeFromOperationName('createPost')).toBe(OperationTypes.ADD);
+  expect(getOpTypeFromOperationName('newPost')).toBe(OperationTypes.ADD);
+  expect(getOpTypeFromOperationName('insertPost')).toBe(OperationTypes.ADD);
+  expect(getOpTypeFromOperationName('updatePost')).toBe(OperationTypes.UPDATE);
+  expect(getOpTypeFromOperationName('editPost')).toBe(OperationTypes.UPDATE);
+  expect(getOpTypeFromOperationName('removePost')).toBe(OperationTypes.REMOVE);
+  expect(getOpTypeFromOperationName('deletePost')).toBe(OperationTypes.REMOVE);
 });
 
 describe('getUpdater', () => {
   test('updater should add item', () => {
-    const updater = getUpdater(CacheOperationTypes.ADD, 'id');
+    const updater = getUpdater(OperationTypes.ADD, 'id');
     expect(updater(posts, newPost)).toEqual([...posts, newPost]);
     expect(updater({}, newPost)).toEqual(newPost);
   });
 
   test('updater should remove item', () => {
-    const updater = getUpdater(CacheOperationTypes.REMOVE, 'id');
+    const updater = getUpdater(OperationTypes.REMOVE, 'id');
     expect(updater(posts, {id: 1})).toEqual([post2, post3]);
     expect(updater({}, {id: 1})).toBeNull();
   });
 
   test('updater should update item', () => {
-    const updater = getUpdater(CacheOperationTypes.UPDATE, 'id');
+    const updater = getUpdater(OperationTypes.UPDATE, 'id');
     const updatedPost = {id: post3.id, title: 'Updated post', __typename: 'post'};
     expect(updater(posts, updatedPost)).toEqual([post1, post2, {...post3, ...updatedPost}]);
     expect(updater(post3, updatedPost)).toEqual({...post3, title: 'Updated post'});

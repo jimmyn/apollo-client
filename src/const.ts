@@ -1,4 +1,4 @@
-export enum CacheOperationTypes {
+export enum OperationTypes {
   AUTO = 'auto',
   ADD = 'add',
   REMOVE = 'remove',

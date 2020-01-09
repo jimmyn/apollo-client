@@ -7,10 +7,10 @@ import {DataProxy} from 'apollo-cache';
 import ApolloClient from 'apollo-client';
 import {DocumentNode} from 'apollo-link';
 import {resultKeyNameFromField} from 'apollo-utilities';
-import {CacheOperationTypes, prefixesForAdd, prefixesForRemove, prefixesForUpdate} from './const';
-import {findArrayInObject, getValueByPath, pick, setValueByPath} from './utils';
 import {FieldNode, OperationDefinitionNode} from 'graphql';
 import produce from 'immer';
+import {OperationTypes, prefixesForAdd, prefixesForRemove, prefixesForUpdate} from './const';
+import {findArrayInObject, getValueByPath, pick, setValueByPath} from './utils';
 
 type Item = {[key: string]: any};
 
@@ -33,18 +33,18 @@ export const setConfig = (config: OfflineConfig) => {
   return Object.assign(offlineConfig, config);
 };
 
-export const getOpTypeFromOperationName = (opName = ''): CacheOperationTypes => {
+export const getOpTypeFromOperationName = (opName = ''): OperationTypes => {
   // Note: we do a toLowerCase() and startsWith() to avoid ambiguity with operations like "RemoveAddendum"
   const comparator = (prefix: string) =>
     opName.toLowerCase().startsWith(prefix) || opName.toLowerCase().startsWith(`on${prefix}`);
 
-  let result = CacheOperationTypes.AUTO;
+  let result = OperationTypes.AUTO;
   [
-    [offlineConfig.prefixesForAdd, CacheOperationTypes.ADD],
-    [offlineConfig.prefixesForRemove, CacheOperationTypes.REMOVE],
-    [offlineConfig.prefixesForUpdate, CacheOperationTypes.UPDATE]
+    [offlineConfig.prefixesForAdd, OperationTypes.ADD],
+    [offlineConfig.prefixesForRemove, OperationTypes.REMOVE],
+    [offlineConfig.prefixesForUpdate, OperationTypes.UPDATE]
   ].forEach(row => {
-    const [prefix, type] = row as [string[], CacheOperationTypes];
+    const [prefix, type] = row as [string[], OperationTypes];
     if (prefix.some(comparator)) {
       result = type;
       return;
@@ -63,11 +63,11 @@ export const updateExistingKeys = <T extends Item>(oldItem: T, newItem: T | unde
 });
 
 export const getUpdater = <T extends Item>(
-  opType: CacheOperationTypes,
+  opType: OperationTypes,
   idField: string
 ): ((currentValue: T[] | T, newItem?: T) => T[] | T | null | undefined) => {
   switch (opType) {
-    case CacheOperationTypes.ADD:
+    case OperationTypes.ADD:
       return (currentValue, newItem) => {
         if (Array.isArray(currentValue)) {
           return newItem
@@ -77,7 +77,7 @@ export const getUpdater = <T extends Item>(
           return newItem;
         }
       };
-    case CacheOperationTypes.UPDATE:
+    case OperationTypes.UPDATE:
       return (currentValue, newItem) => {
         if (Array.isArray(currentValue)) {
           return newItem
@@ -89,7 +89,7 @@ export const getUpdater = <T extends Item>(
           return updateExistingKeys(currentValue, newItem);
         }
       };
-    case CacheOperationTypes.REMOVE:
+    case OperationTypes.REMOVE:
       return (currentValue, newItem) => {
         if (Array.isArray(currentValue)) {
           return newItem
@@ -118,7 +118,7 @@ export type QueryWithVariables<TVariables = OperationVariables> = {
 export type OfflineOptions<TData> = {
   updateQuery?: QueryWithVariables | DocumentNode;
   idField?: string;
-  operationType?: CacheOperationTypes;
+  operationType?: OperationTypes;
   mapResultToUpdate?(data: NonNullable<TData>): Item;
 };
 
@@ -135,15 +135,13 @@ export const updateCache = <TData = any>({
   data,
   idField,
   updateQuery,
-  operationType = CacheOperationTypes.AUTO,
+  operationType = OperationTypes.AUTO,
   mapResultToUpdate
 }: UpdateCacheOptions<TData>) => {
   if (!data) return;
   const [opFieldName]: string[] = Object.keys(data);
   const opType =
-    operationType === CacheOperationTypes.AUTO
-      ? getOpTypeFromOperationName(opFieldName)
-      : operationType;
+    operationType === OperationTypes.AUTO ? getOpTypeFromOperationName(opFieldName) : operationType;
   if (!(data as any)[opFieldName]) return;
   const mutatedItem = mapResultToUpdate ? mapResultToUpdate(data!) : (data as any)[opFieldName];
   const query = (updateQuery as QueryWithVariables).query || (updateQuery as DocumentNode);
