@@ -285,3 +285,5 @@ setOfflineConfig({
 | `prefixesForUpdate` | A list of mutation name prefixes that will result in update operation | [prefixesForUpdate](src/const.ts#L19)
 | `prefixesForAdd` | A list of mutation name prefixes that will result in add operation | [prefixesForAdd](src/const.ts#L32)
 
+## Credits
+This package is based on [Amplify Offline Helpers](https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/OFFLINE_HELPERS.md)
