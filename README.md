@@ -1,6 +1,6 @@
 # Apollo Offline Hooks
 
-A drop-in replacement for [@apollo/react-hooks](https://www.apollographql.com/docs/react/api/react-hooks/) with automatic cache updates. It will update apollo cache based on the mutation or subscription.
+A drop-in replacement for [@apollo/react-hooks](https://www.apollographql.com/docs/react/api/react-hooks/) with automatic cache updates. It will update apollo cache based on a mutation or subscription result.
 
 ## Install
 ```
