@@ -248,4 +248,10 @@ const handleDeleteTodo = () => {
 };
 ```
 
+## Subscriptions
 
+`useSubscription` accepts the same offline options as `useMutation`
+
+```typescript
+useSubscription(onTodoUpdate, {updateQuery: todosQuery});
+```
