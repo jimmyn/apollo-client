@@ -10,3 +10,27 @@ or
 ```
 yarn add apollo-offline-hooks @apollo/react-hooks
 ```
+
+## Setup
+
+```typescript
+import React from 'react';
+import {render} from 'react-dom';
+import ApolloClient from 'apollo-boost';
+
+const client = new ApolloClient({
+  uri: 'localhost:8080',
+});
+
+import {ApolloProvider} from 'apollo-offline-hooks';
+
+const App = () => (
+  <ApolloProvider client={client}>
+    <div>
+      <h2>My first Apollo app 🚀</h2>
+    </div>
+  </ApolloProvider>
+);
+
+render(<App />, document.getElementById('root'));
+```
