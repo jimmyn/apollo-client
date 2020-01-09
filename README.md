@@ -255,3 +255,33 @@ const handleDeleteTodo = () => {
 ```typescript
 useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 ```
+
+## Customize default configurations
+
+Default configurations can be customized by calling `setOfflineConfig`
+
+```typescript
+import {setOfflineConfig} from 'apollo-offline-hooks';
+
+setOfflineConfig({
+  getIdFieldFromObject(item: any) {
+    switch (item.__typename) {
+      case 'Todo':
+        return 'id';
+      case 'User':
+        return 'user_id'
+    }
+  }
+});
+```
+
+## Configuration options
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `idField` | Unique field that is used to find the item in cache. It should be present in the mutation response | `id` 
+| `getIdFieldFromObject` | A function that receives updated item and returns an id field name. If defined it will tke precedence over `idField`
+| `prefixesForRemove` | A list of mutation name prefixes that will result in remove operation | [prefixesForRemove](src/const.ts#L8)
+| `prefixesForUpdate` | A list of mutation name prefixes that will result in update operation | [prefixesForUpdate](src/const.ts#L19)
+| `prefixesForAdd` | A list of mutation name prefixes that will result in add operation | [prefixesForAdd](src/const.ts#L32)
+
