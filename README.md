@@ -39,7 +39,7 @@ render(<App />, document.getElementById('root'));
 
 This package extends `useMutation` options allowing to update cached queries in one line of code instead of writing complex `update` functions.
 
-For example
+For example this code
 
 ```typescript
 import React from 'react';
@@ -74,7 +74,7 @@ export const Todos = () => {
 };
 ```
 
-This is equivalent to
+is equivalent to
 
 ```typescript
 import React from 'react';
