@@ -3,6 +3,14 @@
   "license": "MIT",
   "name": "apollo-offline-hooks",
   "author": "Dmitriy Nevzorov",
+  "description": "Apollo React hooks with automatic cache updates",
+  "keywords": [
+    "apollo",
+    "apollo-react",
+    "apollo-react-hooks",
+    "react",
+    "react-hooks"
+  ],
   "module": "dist/apollo-offline-hooks.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
