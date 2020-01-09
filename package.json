@@ -18,7 +18,6 @@
     "release": "node -r dotenv/config $(yarn bin)/release-it"
   },
   "peerDependencies": {
-    "@apollo/react-common": "^3.1.3",
     "@apollo/react-hooks": "^3.1.3"
   },
   "husky": {
