@@ -22,7 +22,7 @@ export type OfflineConfig = {
   idField?: string;
 };
 
-const offlineConfig: OfflineConfig = {
+export const offlineConfig: OfflineConfig = {
   prefixesForRemove,
   prefixesForUpdate,
   prefixesForAdd,
@@ -168,7 +168,6 @@ export const updateCache = <TData = any>({
     const opResultCachedValue = draft[queryField];
     const path = findArrayInObject(opResultCachedValue);
     const update = updaterFn(getValueByPath(opResultCachedValue, path), mutatedItem);
-    console.log(update);
     if (!path || path.length === 0) {
       draft[queryField] = update;
     } else {

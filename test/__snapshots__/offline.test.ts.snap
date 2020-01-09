@@ -84,6 +84,34 @@ Object {
 }
 `;
 
+exports[`updateCache should update item with custom id field 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
 exports[`updateCache should update item with mapResultToUpdate 1`] = `
 Object {
   "posts": Array [
@@ -106,6 +134,174 @@ Object {
       "date": "2018-12-25",
       "id": 25,
       "title": "Updated post with mapResultToUpdate",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with custom getIdFieldFromObject in config 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with custom id field in config 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with custom idField in config 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with custom idField in config 2`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with getIdFieldFromObject in config 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
+      "user_id": 9,
+    },
+  ],
+}
+`;
+
+exports[`updateCache with custom config should update item with idField in config 1`] = `
+Object {
+  "posts": Array [
+    Object {
+      "__typename": "post",
+      "date": "2018-01-01",
+      "id": 1,
+      "title": "A day on the beach",
+      "user_id": 1,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-24",
+      "id": 24,
+      "title": "Coding for joy",
+      "user_id": 10,
+    },
+    Object {
+      "__typename": "post",
+      "date": "2018-12-25",
+      "id": 25,
+      "title": "Updated post",
       "user_id": 9,
     },
   ],

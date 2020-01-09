@@ -1,7 +1,14 @@
 import ApolloClient from 'apollo-boost';
 import {CacheOperationTypes} from 'const';
 import 'cross-fetch/polyfill';
-import {getOperationFieldName, getOpTypeFromOperationName, getUpdater, updateCache} from 'offline';
+import {
+  getOperationFieldName,
+  getOpTypeFromOperationName,
+  getUpdater,
+  updateCache,
+  setConfig,
+  offlineConfig
+} from 'offline';
 import {
   createPostMutation,
   deletePostMutation,
@@ -9,6 +16,8 @@ import {
   postsQuery,
   updatePostMutation
 } from './operations';
+
+const defaultConfig = {...offlineConfig};
 
 const post1 = Object.freeze({
   __typename: 'post',
@@ -148,5 +157,53 @@ describe('updateCache', () => {
     });
 
     expect(client.readQuery({query: postsQuery})).toMatchSnapshot();
+  });
+
+  test('should update item with custom id field', () => {
+    const updatedPost = {user_id: post3.user_id, title: 'Updated post', __typename: 'post'};
+    updateCache({
+      client,
+      data: {updatePost: updatedPost},
+      updateQuery: postsQuery,
+      idField: 'user_id'
+    });
+
+    expect(client.readQuery({query: postsQuery})).toMatchSnapshot();
+  });
+
+  describe('with custom config', () => {
+    beforeEach(() => {
+      setConfig(defaultConfig);
+    });
+
+    afterAll(() => {
+      setConfig(defaultConfig);
+    });
+
+    test('should update item with idField in config', () => {
+      setConfig({idField: 'user_id'});
+      const updatedPost = {user_id: post3.user_id, title: 'Updated post', __typename: 'post'};
+      updateCache({
+        client,
+        data: {updatePost: updatedPost},
+        updateQuery: postsQuery
+      });
+
+      expect(client.readQuery({query: postsQuery})).toMatchSnapshot();
+    });
+
+    test('should update item with getIdFieldFromObject in config', () => {
+      const getIdFieldFromObject = jest.fn(() => 'user_id');
+      setConfig({getIdFieldFromObject});
+      const updatedPost = {user_id: post3.user_id, title: 'Updated post', __typename: 'post'};
+      updateCache({
+        client,
+        data: {updatePost: updatedPost},
+        updateQuery: postsQuery
+      });
+
+      expect(client.readQuery({query: postsQuery})).toMatchSnapshot();
+      expect(getIdFieldFromObject).toHaveBeenCalledWith(updatedPost);
+    });
   });
 });
