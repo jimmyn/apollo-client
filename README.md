@@ -34,3 +34,75 @@ const App = () => (
 
 render(<App />, document.getElementById('root'));
 ```
+
+## Usage
+
+```typescript
+import React from 'react';
+import {useMutation, useQuery} from 'apollo-offline-hooks';
+import {createTodoMutation, todosQuery} from './api/operations';
+import {TodosList} from './TodosList';
+
+export const TodosSimple = () => {
+  const {data} = useQuery(todosQuery);
+  const [createTodo] = useMutation(createTodoMutation, {updateQuery: todosQuery});
+  const todos = data?.todos || [];
+
+  const handleCreateTodo = () => {
+    return createTodo({
+      variables: {
+        task: 'New todo',
+        createdAt: new Date().toISOString()
+      }
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleCreateTodo}>Create todo</button>
+      <TodosList todos={todos} />
+    </div>
+  );
+};
+```
+
+This is equivalent to
+
+```typescript
+import React from 'react';
+import {useMutation, useQuery} from '@apollo/react-hooks';
+import {createTodoMutation, todosQuery} from './api/operations';
+import {TodosList} from './TodosList';
+
+export const TodosSimple = () => {
+  const {data} = useQuery(todosQuery);
+  const [createTodo] = useMutation(createTodoMutation);
+  const todos = data?.todos || [];
+
+  const handleCreateTodo = () => {
+    return createTodo({
+      variables: {
+        task: 'New todo',
+        createdAt: new Date().toISOString()
+      },
+      update: (proxy, {data}) => {
+        const newTodo = data.createTodo;
+        const cache = proxy.readQuery({query: todosQuery});
+        proxy.writeQuery({
+          query: todosQuery,
+          data: {
+            todos: [...cache.todos, newTodo]
+          }
+        });
+      }
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={handleCreateTodo}>Create todo</button>
+      <TodosList todos={todos} />
+    </div>
+  );
+};
+```
