@@ -218,3 +218,34 @@ export const Todo: React.FC<Props> = ({todo}) => {
 | `idField` | Unique field that is used to find the item in cache. It should be present in the mutation response | `id` 
 | `operationType` | Indicates what type of the operation should be performed e.g. add/remove/update item. By default operation type is automatically detacted from mutation name e.g. `createTodo` will result in `OperationTypes.ADD`. | `OperationTypes.AUTO`
 | `mapResultToUpdate` | A function that receives mutation result and returns an updated item. Function result should contain at least an id field |
+
+Offline options can be passed to the `useMutation` hook or to the mutation function directly.
+
+```typescript
+const [deleteTodo] = useMutation(deleteTodoMutation, {
+  updateQuery: todosQuery,
+  mapResultToUpdate: data => todo
+});
+
+const handleDeleteTodo = () => {
+  return deleteTodo({
+    variables: {id: todo.id}
+  });
+};
+```
+
+is the same as
+
+```typescript
+const [deleteTodo] = useMutation(deleteTodoMutation);
+
+const handleDeleteTodo = () => {
+  return deleteTodo({
+    variables: {id: todo.id},
+    updateQuery: todosQuery,
+    mapResultToUpdate: data => todo
+  });
+};
+```
+
+
