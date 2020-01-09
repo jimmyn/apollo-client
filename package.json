@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "yarn lint --fix"
     }
   },
   "prettier": {
@@ -51,7 +51,7 @@
     },
     "hooks": {
       "before:init": [
-        "yarn lint",
+        "yarn lint --fix",
         "CI=true yarn test"
       ]
     }
