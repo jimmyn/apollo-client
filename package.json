@@ -15,7 +15,7 @@
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
-    "release": "node -r dotenv/config $(yarn bin)/release-it"
+    "release": "release-it"
   },
   "peerDependencies": {
     "@apollo/react-hooks": "^3.1.3"
