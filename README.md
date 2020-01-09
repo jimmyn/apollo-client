@@ -37,7 +37,9 @@ render(<App />, document.getElementById('root'));
 
 ## Mutations
 
-This package extends `useMutation` options allowing to update cached queries in one line of code instead of writing complex `update` functions
+This package extends `useMutation` options allowing to update cached queries in one line of code instead of writing complex `update` functions.
+
+For example
 
 ```typescript
 import React from 'react';
@@ -45,7 +47,7 @@ import {useMutation, useQuery} from 'apollo-offline-hooks';
 import {createTodoMutation, todosQuery} from './api/operations';
 import {TodosList} from './TodosList';
 
-export const TodosSimple = () => {
+export const Todos = () => {
   const {data} = useQuery(todosQuery);
   const todos = data?.todos || [];
   
@@ -80,7 +82,7 @@ import {useMutation, useQuery} from '@apollo/react-hooks';
 import {createTodoMutation, todosQuery} from './api/operations';
 import {TodosList} from './TodosList';
 
-export const TodosSimple = () => {
+export const Todos = () => {
   const {data} = useQuery(todosQuery);
   const todos = data?.todos || [];
   
@@ -112,6 +114,100 @@ export const TodosSimple = () => {
     </div>
   );
 };
+```
+
+And this code
+
+```typescript
+import React from 'react';
+import {useMutation} from 'apollo-offline-hooks';
+import {Todo} from './api/generated';
+import {deleteTodoMutation, todosQuery, updateTodoMutation} from './api/operations';
+
+type Props = {
+  todo: Todo;
+};
+
+export const Todo: React.FC<Props> = ({todo}) => {
+  const [deleteTodo] = useMutation(deleteTodoMutation, {
+    updateQuery: todosQuery // <== notice updateQuery option
+    
+    // to delete an item we need to provide it's id
+    // if our api simply returns true when item is deleted
+    // we need to return an id explicitly
+    mapResultToUpdate: data => todo 
+  });
+  const [updateTodo] = useMutation(updateTodoMutation);
+
+  const handleDeleteTodo = () => {
+    return deleteTodo({
+      variables: {id: todo.id}
+    });
+  };
+
+  const handleUpdateTodo = () => {
+    return updateTodo({
+      variables: {id: todo.id, done: !todo.done}
+    });
+  };
+
+  return (
+    <li>
+      <input type="checkbox" checked={todo.done} onChange={handleUpdateTodo} />
+      {todo.task}
+      <button onClick={handleDeleteTodo}>delete</button>
+    </li>
+  );
+};
+```
+
+is equivalent to
+
+```typescript
+import React from 'react';
+import {useMutation} from 'apollo-offline-hooks';
+import {Todo} from './api/generated';
+import {deleteTodoMutation, todosQuery, updateTodoMutation} from './api/operations';
+
+type Props = {
+  todo: Todo;
+};
+
+export const Todo: React.FC<Props> = ({todo}) => {
+  const [deleteTodo] = useMutation(deleteTodoMutation);
+  const [updateTodo] = useMutation(updateTodoMutation);
+
+  const handleDeleteTodo = () => {
+    return deleteTodo({
+      variables: {id: todo.id},
+      update: proxy => {
+        const cache = proxy.readQuery({query: todosQuery});
+        proxy.writeQuery({
+          query: todosQuery,
+          data: {
+            todos: cache.todos.filter(item => item.id !== todo.id)
+          }
+        });
+      }
+    });
+  };
+
+  const handleUpdateTodo = () => {
+    // apollo client is clever enough to update an item in cache
+    return updateTodo({
+      variables: {id: todo.id, done: !todo.done}
+    });
+  };
+
+  return (
+    <li>
+      <input type="checkbox" checked={todo.done} onClick={handleUpdateTodo} />
+      {todo.task}
+      <button onClick={handleDeleteTodo}>delete</button>
+    </li>
+  );
+};
+
 ```
 
 ## `useMutation` offline options
