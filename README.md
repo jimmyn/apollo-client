@@ -228,7 +228,7 @@ export const Todo: React.FC<Props> = ({todo}) => {
 | `operationType` | Indicates what type of the operation should be performed e.g. add/remove/update item. By default operation type is automatically detected from mutation name e.g. `createTodo` will result in `OperationTypes.ADD`. | `OperationTypes.AUTO`
 | `mapResultToUpdate` | A function that receives mutation result and returns an updated item. Function result should contain at least an id field |
 
-[Other options](https://www.apollographql.com/docs/react/api/react-hooks/#options-2)
+[Other `useMutation` hook options](https://www.apollographql.com/docs/react/api/react-hooks/#options-2)
 
 Offline options can be passed to the `useMutation` hook or to the mutation function directly.
 
@@ -267,7 +267,7 @@ const handleDeleteTodo = () => {
 useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 ```
 
-[Other options](https://www.apollographql.com/docs/react/api/react-hooks/#options-3)
+[Other `useSubscription` hook options](https://www.apollographql.com/docs/react/api/react-hooks/#options-3)
 
 ## Customize default configurations
 
@@ -298,7 +298,7 @@ setOfflineConfig({
 | `prefixesForUpdate` | A list of mutation name prefixes that will result in update operation | [prefixesForUpdate](src/const.ts#L19)
 | `prefixesForAdd` | A list of mutation name prefixes that will result in add operation | [prefixesForAdd](src/const.ts#L32)
 
-## `updateApolloCache` directly
+## Update Apollo cache directly
 
 This package also exposes `updateApolloCache` function directly, that can be used to build custom implementations
 
@@ -311,6 +311,7 @@ const newTodo = {
   __typename: 'Todo',
   id: 1,
   task: 'New todo',
+  done: false,
   createdAt: new Date().toISOString()
 };
 
