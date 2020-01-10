@@ -13,16 +13,15 @@ yarn add apollo-offline-hooks @apollo/react-hooks
 
 ## Setup
 
-```typescript
+```typescript jsx
 import React from 'react';
 import {render} from 'react-dom';
 import ApolloClient from 'apollo-boost';
+import {ApolloProvider} from 'apollo-offline-hooks';
 
 const client = new ApolloClient({
   uri: 'localhost:8080',
 });
-
-import {ApolloProvider} from 'apollo-offline-hooks';
 
 const App = () => (
   <ApolloProvider client={client}>
@@ -41,7 +40,7 @@ This package extends `useMutation` options allowing to update cached queries in 
 
 For example this code
 
-```typescript
+```typescript jsx
 import React from 'react';
 import {useMutation, useQuery} from 'apollo-offline-hooks';
 import {createTodoMutation, todosQuery} from './api/operations';
@@ -76,7 +75,7 @@ export const Todos = () => {
 
 is equivalent to
 
-```typescript
+```typescript jsx
 import React from 'react';
 import {useMutation, useQuery} from '@apollo/react-hooks';
 import {createTodoMutation, todosQuery} from './api/operations';
@@ -118,7 +117,7 @@ export const Todos = () => {
 
 And this code
 
-```typescript
+```typescript jsx
 import React from 'react';
 import {useMutation} from 'apollo-offline-hooks';
 import {Todo} from './api/generated';
@@ -163,7 +162,7 @@ export const Todo: React.FC<Props> = ({todo}) => {
 
 is equivalent to
 
-```typescript
+```typescript jsx
 import React from 'react';
 import {useMutation} from 'apollo-offline-hooks';
 import {Todo} from './api/generated';
@@ -221,7 +220,7 @@ export const Todo: React.FC<Props> = ({todo}) => {
 
 Offline options can be passed to the `useMutation` hook or to the mutation function directly.
 
-```typescript
+```typescript jsx
 const [deleteTodo] = useMutation(deleteTodoMutation, {
   updateQuery: todosQuery,
   mapResultToUpdate: data => todo
@@ -236,7 +235,7 @@ const handleDeleteTodo = () => {
 
 is the same as
 
-```typescript
+```typescript jsx
 const [deleteTodo] = useMutation(deleteTodoMutation);
 
 const handleDeleteTodo = () => {
@@ -252,7 +251,7 @@ const handleDeleteTodo = () => {
 
 `useSubscription` accepts the same offline options as `useMutation`
 
-```typescript
+```typescript jsx
 useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 ```
 
@@ -260,7 +259,7 @@ useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 
 Default configurations can be customized by calling `setOfflineConfig`
 
-```typescript
+```typescript jsx
 import {setOfflineConfig} from 'apollo-offline-hooks';
 
 setOfflineConfig({
