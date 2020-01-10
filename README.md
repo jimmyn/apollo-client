@@ -36,7 +36,7 @@ render(<App />, document.getElementById('root'));
 
 ## Mutations
 
-This package extends `useMutation` options allowing to update cached queries in one line of code instead of writing complex `update` functions.
+This package extends [useMutation](https://www.apollographql.com/docs/react/api/react-hooks/#options-2) options allowing to update cached queries in one line of code instead of writing complex `update` functions.
 
 For example this code
 
@@ -51,7 +51,7 @@ export const Todos = () => {
   const todos = data?.todos || [];
   
   const [createTodo] = useMutation(createTodoMutation, {
-    updateQuery: todosQuery // <== notice updateQuery option
+    updateQuery: todosQuery // <== pass a gql query you want to update
   });
   
 
@@ -95,13 +95,17 @@ export const Todos = () => {
       },
       update: (proxy, {data}) => {
         const newTodo = data.createTodo;
-        const cache = proxy.readQuery({query: todosQuery});
-        proxy.writeQuery({
-          query: todosQuery,
-          data: {
-            todos: [...cache.todos, newTodo]
-          }
-        });
+        try {
+          const cache = proxy.readQuery({query: todosQuery});
+          proxy.writeQuery({
+            query: todosQuery,
+            data: {
+              todos: [...cache.todos, newTodo]
+            }
+          });
+        } catch (error) {
+          console.log(error)
+        }
       }
     });
   };
@@ -129,7 +133,7 @@ type Props = {
 
 export const Todo: React.FC<Props> = ({todo}) => {
   const [deleteTodo] = useMutation(deleteTodoMutation, {
-    updateQuery: todosQuery // <== notice updateQuery option
+    updateQuery: todosQuery,
     
     // to delete an item we need to provide it's id
     // if our api simply returns true when item is deleted
@@ -180,19 +184,25 @@ export const Todo: React.FC<Props> = ({todo}) => {
     return deleteTodo({
       variables: {id: todo.id},
       update: proxy => {
-        const cache = proxy.readQuery({query: todosQuery});
-        proxy.writeQuery({
-          query: todosQuery,
-          data: {
-            todos: cache.todos.filter(item => item.id !== todo.id)
-          }
-        });
+        try {
+          const cache = proxy.readQuery({query: todosQuery});
+          proxy.writeQuery({
+            query: todosQuery,
+            data: {
+              todos: cache.todos.filter(item => item.id !== todo.id)
+            }
+          });
+        } catch (error) {
+          console.log(error)
+        }
       }
     });
   };
 
   const handleUpdateTodo = () => {
     // apollo client is clever enough to update an item in cache
+    // although if you want to update an item with different type you'll have to write
+    // a manual update function
     return updateTodo({
       variables: {id: todo.id, done: !todo.done}
     });
@@ -217,6 +227,8 @@ export const Todo: React.FC<Props> = ({todo}) => {
 | `idField` | Unique field that is used to find the item in cache. It should be present in the mutation response | `id` 
 | `operationType` | Indicates what type of the operation should be performed e.g. add/remove/update item. By default operation type is automatically detected from mutation name e.g. `createTodo` will result in `OperationTypes.ADD`. | `OperationTypes.AUTO`
 | `mapResultToUpdate` | A function that receives mutation result and returns an updated item. Function result should contain at least an id field |
+
+[Other options](https://www.apollographql.com/docs/react/api/react-hooks/#options-2)
 
 Offline options can be passed to the `useMutation` hook or to the mutation function directly.
 
@@ -254,6 +266,8 @@ const handleDeleteTodo = () => {
 ```typescript jsx
 useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 ```
+
+[Other options](https://www.apollographql.com/docs/react/api/react-hooks/#options-3)
 
 ## Customize default configurations
 
