@@ -298,5 +298,53 @@ setOfflineConfig({
 | `prefixesForUpdate` | A list of mutation name prefixes that will result in update operation | [prefixesForUpdate](src/const.ts#L19)
 | `prefixesForAdd` | A list of mutation name prefixes that will result in add operation | [prefixesForAdd](src/const.ts#L32)
 
+## `updateApolloCache` directly
+
+This package also exposes `updateApolloCache` function directly, that can be used to build custom implementations
+
+Example
+
+```typescript
+import {updateApolloCache} from 'apollo-offline-hooks';
+
+const newTodo = {
+  __typename: 'Todo',
+  id: 1,
+  task: 'New todo',
+  createdAt: new Date().toISOString()
+};
+
+updateApolloCache({
+  client,
+  data: {createTodo: newTodo},
+  updateQuery: todosQuery
+});
+```
+
+Function signature
+
+```typescript
+type OfflineOptions<TData> = {
+    updateQuery?: QueryWithVariables | DocumentNode;
+    idField?: string;
+    operationType?: OperationTypes;
+    mapResultToUpdate?(data: NonNullable<TData>): Item;
+};
+
+type UpdateCacheOptions<TData = any> = OfflineOptions<TData> & {
+    client: ApolloClient<any> | DataProxy;
+    data: TData;
+};
+
+const updateApolloCache: <TData = any>({ 
+    client, 
+    data, 
+    idField, 
+    updateQuery, 
+    operationType, 
+    mapResultToUpdate
+}: UpdateCacheOptions<TData>) => void;
+```
+
 ## Credits
 This package is based on [Amplify Offline Helpers](https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/OFFLINE_HELPERS.md)

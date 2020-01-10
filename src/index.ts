@@ -6,13 +6,15 @@ import {
   OperationVariables
 } from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
-import {getMutationOptions, getSubscriptionOptions, OfflineOptions, setConfig} from './offline';
+import * as offline from './offline';
 import {DocumentNode} from 'graphql';
 
 export * from './const';
 export * from '@apollo/react-hooks';
 
-export const setOfflineConfig = setConfig;
+export type OfflineOptions<TData> = offline.OfflineOptions<TData>;
+export const setOfflineConfig = offline.setConfig;
+export const updateApolloCache = offline.updateCache;
 
 export type MutationHookOptions<TData, TVariables> = ApolloReactHooks.MutationHookOptions<
   TData,
@@ -55,7 +57,7 @@ export const useMutation = <TData = any, TVariables = ApolloReactCommon.Operatio
     mutationFunctionOptions?: MutationFunctionOptions<TData, TVariables>
   ) => {
     return mutationFunction(
-      getMutationOptions({
+      offline.getMutationOptions({
         updateQuery,
         idField,
         operationType,
@@ -79,6 +81,6 @@ export const useSubscription = <TData = any, TVariables = OperationVariables>(
 } => {
   return ApolloReactHooks.useSubscription<TData, TVariables>(
     subscription,
-    getSubscriptionOptions(subscriptionHookOptions)
+    offline.getSubscriptionOptions(subscriptionHookOptions)
   );
 };
