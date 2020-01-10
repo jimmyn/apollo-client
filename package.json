@@ -3,7 +3,7 @@
   "license": "MIT",
   "name": "apollo-offline-hooks",
   "author": "Dmitriy Nevzorov",
-  "repository": "https://github.com/jimmyn/aws-elasticsearch-model",
+  "repository": "https://github.com/jimmyn/apollo-offline-hooks",
   "description": "Apollo React Hooks with automatic cache updates",
   "keywords": [
     "apollo",
