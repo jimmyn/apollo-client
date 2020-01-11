@@ -168,7 +168,7 @@ is equivalent to
 
 ```typescript jsx
 import React from 'react';
-import {useMutation} from 'apollo-offline-hooks';
+import {useMutation} from '@apollo/react-hooks';
 import {Todo} from './api/generated';
 import {deleteTodoMutation, todosQuery, updateTodoMutation} from './api/operations';
 
