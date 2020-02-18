@@ -18,7 +18,7 @@ export type OfflineConfig = {
   prefixesForRemove?: string[];
   prefixesForUpdate?: string[];
   prefixesForAdd?: string[];
-  getIdFieldFromObject?(item: Item): string;
+  getIdFieldFromObject?(item: Item): string | undefined | null;
   idField?: string;
 };
 
