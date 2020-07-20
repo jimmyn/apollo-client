@@ -1,6 +1,8 @@
 import {
   ApolloClient,
-  BaseSubscriptionOptions, DataProxy, DocumentNode,
+  BaseSubscriptionOptions,
+  DataProxy,
+  DocumentNode,
   MutationFunctionOptions,
   OperationVariables
 } from '@apollo/client';
