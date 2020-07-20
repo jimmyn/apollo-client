@@ -1,4 +1,4 @@
-import ApolloClient from 'apollo-boost';
+import {ApolloClient, InMemoryCache} from '@apollo/client';
 import {OperationTypes} from 'const';
 import 'cross-fetch/polyfill';
 import {
@@ -93,7 +93,9 @@ describe('getUpdater', () => {
 describe('updateCache', () => {
   let client: ApolloClient<any>;
   beforeEach(() => {
-    client = new ApolloClient();
+    client = new ApolloClient({
+      cache: new InMemoryCache()
+    });
     client.writeQuery({
       query: postsQuery,
       data: {posts: [...posts]}

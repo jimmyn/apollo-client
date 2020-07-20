@@ -1,11 +1,9 @@
 import {
-  BaseSubscriptionOptions,
+  ApolloClient,
+  BaseSubscriptionOptions, DataProxy, DocumentNode,
   MutationFunctionOptions,
   OperationVariables
-} from '@apollo/react-common';
-import {DataProxy} from 'apollo-cache';
-import ApolloClient from 'apollo-client';
-import {DocumentNode} from 'apollo-link';
+} from '@apollo/client';
 import {resultKeyNameFromField} from 'apollo-utilities';
 import {FieldNode, OperationDefinitionNode} from 'graphql';
 import produce from 'immer';
