@@ -1,14 +1,19 @@
 # Apollo Offline Hooks
 
-A drop-in replacement for [@apollo/react-hooks](https://www.apollographql.com/docs/react/api/react-hooks/) with automatic cache updates. It will update apollo cache based on a mutation or subscription result.
+A drop-in replacement
+for [@apollo/client](https://www.apollographql.com/docs/react/api/react-hooks/) with automatic cache
+updates. It will update apollo cache based on a mutation or subscription result.
 
 ## Install
+
 ```
-npm i apollo-offline-hooks @apollo/react-hooks --save
+npm i apollo-offline-hooks @apollo/client --save
 ```
+
 or
+
 ```
-yarn add apollo-offline-hooks @apollo/react-hooks
+yarn add apollo-offline-hooks @apollo/client
 ```
 
 ## Setup
@@ -16,11 +21,11 @@ yarn add apollo-offline-hooks @apollo/react-hooks
 ```typescript jsx
 import React from 'react';
 import {render} from 'react-dom';
-import ApolloClient from 'apollo-boost';
-import {ApolloProvider} from 'apollo-offline-hooks';
+import {ApolloClient, InMemoryCache} from 'apollo-offline-hooks';
 
 const client = new ApolloClient({
   uri: 'localhost:8080',
+  cache: new InMemoryCache()
 });
 
 const App = () => (
@@ -36,7 +41,9 @@ render(<App />, document.getElementById('root'));
 
 ## Mutations
 
-This package extends [useMutation](https://www.apollographql.com/docs/react/api/react-hooks/#options-2) options allowing to update cached queries in one line of code instead of writing complex `update` functions.
+This package
+extends [useMutation](https://www.apollographql.com/docs/react/api/react/hooks/#options-2) options
+allowing to update cached queries in one line of code instead of writing complex `update` functions.
 
 For example this code
 
@@ -49,11 +56,10 @@ import {TodosList} from './TodosList';
 export const Todos = () => {
   const {data} = useQuery(todosQuery);
   const todos = data?.todos || [];
-  
+
   const [createTodo] = useMutation(createTodoMutation, {
     updateQuery: todosQuery // <== pass a gql query you want to update
   });
-  
 
   const handleCreateTodo = () => {
     return createTodo({
@@ -84,9 +90,9 @@ import {TodosList} from './TodosList';
 export const Todos = () => {
   const {data} = useQuery(todosQuery);
   const todos = data?.todos || [];
-  
+
   const [createTodo] = useMutation(createTodoMutation);
-  
+
   const handleCreateTodo = () => {
     return createTodo({
       variables: {
@@ -104,7 +110,7 @@ export const Todos = () => {
             }
           });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       }
     });
@@ -134,11 +140,11 @@ type Props = {
 export const Todo: React.FC<Props> = ({todo}) => {
   const [deleteTodo] = useMutation(deleteTodoMutation, {
     updateQuery: todosQuery,
-    
+
     // to delete an item we need to provide it's id
     // if our api simply returns true when item is deleted
     // we need to return an id explicitly
-    mapResultToUpdate: data => todo 
+    mapResultToUpdate: data => todo
   });
   const [updateTodo] = useMutation(updateTodoMutation);
 
@@ -193,7 +199,7 @@ export const Todo: React.FC<Props> = ({todo}) => {
             }
           });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       }
     });
@@ -216,19 +222,19 @@ export const Todo: React.FC<Props> = ({todo}) => {
     </li>
   );
 };
-
 ```
 
 ## `useMutation` offline options
 
-| Option | Description | Default |
-| --- | --- | --- |
-| `updateQuery` | A graphql query (wrapped in `gql` tag) that should be updated. You can pass query directly or specify it with variables `{query: todosQuery, variables: {limit: 10}}` |
-| `idField` | Unique field that is used to find the item in cache. It should be present in the mutation response | `id` 
-| `operationType` | Indicates what type of the operation should be performed e.g. add/remove/update item. By default operation type is automatically detected from mutation name e.g. `createTodo` will result in `OperationTypes.ADD`. | `OperationTypes.AUTO`
-| `mapResultToUpdate` | A function that receives mutation result and returns an updated item. Function result should contain at least an id field |
+| Option              | Description                                                                                                                                                                                                                                                                          | Default               |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
+| `updateQuery`       | A graphql query (wrapped in `gql` tag) that should be updated. You can pass query directly or specify it with variables `{query: todosQuery, variables: {limit: 10}}`                                                                                                                |
+| `updatePath`        | Overrides a path inside the query where the item should be updated. For example if your query has structure like `{items: [...], total: 10}`, you can specify `updatePath: ['items']`. In most cases it is automatically detected. Pass `[]` to update data in the root query object |
+| `idField`           | Unique field that is used to find the item in cache. It should be present in the mutation response                                                                                                                                                                                   | `id`                  |
+| `operationType`     | Indicates what type of the operation should be performed e.g. add/remove/update item. By default operation type is automatically detected from mutation name e.g. `createTodo` will result in `OperationTypes.ADD`.                                                                  | `OperationTypes.AUTO` |
+| `mapResultToUpdate` | A function that receives mutation result and returns an updated item. Function result should contain at least an id field                                                                                                                                                            |
 
-[Other `useMutation` hook options](https://www.apollographql.com/docs/react/api/react-hooks/#options-2)
+[Other `useMutation` hook options](https://www.apollographql.com/docs/react/api/react/hooks/#options-2)
 
 Offline options can be passed to the `useMutation` hook or to the mutation function directly.
 
@@ -267,7 +273,7 @@ const handleDeleteTodo = () => {
 useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 ```
 
-[Other `useSubscription` hook options](https://www.apollographql.com/docs/react/api/react-hooks/#options-3)
+[Other `useSubscription` hook options](https://www.apollographql.com/docs/react/api/react/hooks/#options-3)
 
 ## Customize default configurations
 
@@ -282,7 +288,7 @@ setOfflineConfig({
       case 'Todo':
         return 'id';
       case 'User':
-        return 'user_id'
+        return 'user_id';
     }
   }
 });
@@ -290,17 +296,18 @@ setOfflineConfig({
 
 ## Configuration options
 
-| Option | Description | Default |
-| --- | --- | --- |
-| `idField` | Unique field that is used to find the item in cache. It should be present in the mutation response | `id` 
-| `getIdFieldFromObject` | A function that receives updated item and returns an id field name. If defined it will tke precedence over `idField`
-| `prefixesForRemove` | A list of mutation name prefixes that will result in remove operation | [prefixesForRemove](src/const.ts#L8)
-| `prefixesForUpdate` | A list of mutation name prefixes that will result in update operation | [prefixesForUpdate](src/const.ts#L19)
-| `prefixesForAdd` | A list of mutation name prefixes that will result in add operation | [prefixesForAdd](src/const.ts#L32)
+| Option                 | Description                                                                                                          | Default                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `idField`              | Unique field that is used to find the item in cache. It should be present in the mutation response                   | `id`                                  |
+| `getIdFieldFromObject` | A function that receives updated item and returns an id field name. If defined it will tke precedence over `idField` |
+| `prefixesForRemove`    | A list of mutation name prefixes that will result in remove operation                                                | [prefixesForRemove](src/const.ts#L8)  |
+| `prefixesForUpdate`    | A list of mutation name prefixes that will result in update operation                                                | [prefixesForUpdate](src/const.ts#L19) |
+| `prefixesForAdd`       | A list of mutation name prefixes that will result in add operation                                                   | [prefixesForAdd](src/const.ts#L32)    |
 
 ## Update Apollo cache directly
 
-This package also exposes `updateApolloCache` function directly, that can be used to build custom implementations
+This package also exposes `updateApolloCache` function directly, that can be used to build custom
+implementations
 
 Example
 
@@ -326,26 +333,28 @@ Function signature
 
 ```typescript
 type OfflineOptions<TData> = {
-    updateQuery?: QueryWithVariables | DocumentNode;
-    idField?: string;
-    operationType?: OperationTypes;
-    mapResultToUpdate?(data: NonNullable<TData>): Item;
+  updateQuery?: QueryWithVariables | DocumentNode;
+  idField?: string;
+  operationType?: OperationTypes;
+  mapResultToUpdate?(data: NonNullable<TData>): Item;
 };
 
 type UpdateCacheOptions<TData = any> = OfflineOptions<TData> & {
-    client: ApolloClient<any> | DataProxy;
-    data: TData;
+  client: ApolloClient<any> | DataProxy;
+  data: TData;
 };
 
-const updateApolloCache: <TData = any>({ 
-    client, 
-    data, 
-    idField, 
-    updateQuery, 
-    operationType, 
-    mapResultToUpdate
+const updateApolloCache: <TData = any>({
+  client,
+  data,
+  idField,
+  updateQuery,
+  operationType,
+  mapResultToUpdate
 }: UpdateCacheOptions<TData>) => void;
 ```
 
 ## Credits
-This package is based on [Amplify Offline Helpers](https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/OFFLINE_HELPERS.md)
+
+This package is based
+on [Amplify Offline Helpers](https://github.com/awslabs/aws-mobile-appsync-sdk-js/blob/master/OFFLINE_HELPERS.md)

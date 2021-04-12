@@ -79,6 +79,7 @@ export const getUpdater = <T extends Item>(
       };
     case OperationTypes.UPDATE:
       return (currentValue, newItem) => {
+        console.log({currentValue, newItem});
         if (Array.isArray(currentValue)) {
           return newItem
             ? currentValue.map(item =>
@@ -117,6 +118,7 @@ export type QueryWithVariables<TVariables = OperationVariables> = {
 
 export type OfflineOptions<TData> = {
   updateQuery?: QueryWithVariables | DocumentNode;
+  updatePath?: string[];
   idField?: string;
   operationType?: OperationTypes;
   mapResultToUpdate?(data: NonNullable<TData>): Item;
@@ -135,6 +137,7 @@ export const updateCache = <TData = any>({
   data,
   idField,
   updateQuery,
+  updatePath,
   operationType = OperationTypes.AUTO,
   mapResultToUpdate
 }: UpdateCacheOptions<TData>) => {
@@ -164,8 +167,9 @@ export const updateCache = <TData = any>({
 
   const updatedQueryData = produce(cachedQueryResult, (draft: any) => {
     const opResultCachedValue = draft[queryField];
-    const path = findArrayInObject(opResultCachedValue);
+    const path = updatePath || findArrayInObject(opResultCachedValue);
     const update = updaterFn(getValueByPath(opResultCachedValue, path), mutatedItem);
+    console.log({update});
     if (!path || path.length === 0) {
       draft[queryField] = update;
     } else {
@@ -179,6 +183,7 @@ export const updateCache = <TData = any>({
 
 export const getMutationOptions = <TData = any, TVariables = OperationVariables>({
   updateQuery,
+  updatePath,
   idField,
   operationType,
   mapResultToUpdate,
@@ -187,7 +192,15 @@ export const getMutationOptions = <TData = any, TVariables = OperationVariables>
   if (!updateQuery || options.update) return options;
   return {
     update: (client, {data}) => {
-      updateCache({client, data, idField, mapResultToUpdate, operationType, updateQuery});
+      updateCache({
+        client,
+        data,
+        idField,
+        mapResultToUpdate,
+        operationType,
+        updateQuery,
+        updatePath
+      });
     },
     ...options
   };
@@ -198,6 +211,7 @@ export type SubscriptionOptions<TData, TVariables> = BaseSubscriptionOptions<TDa
 
 export const getSubscriptionOptions = <TData = any, TVariables = OperationVariables>({
   updateQuery,
+  updatePath,
   idField,
   operationType,
   mapResultToUpdate,
@@ -206,7 +220,15 @@ export const getSubscriptionOptions = <TData = any, TVariables = OperationVariab
   if (!updateQuery || options.onSubscriptionData) return options;
   return {
     onSubscriptionData: ({client, subscriptionData: {data}}) => {
-      updateCache({client, data, updateQuery, operationType, idField, mapResultToUpdate});
+      updateCache({
+        client,
+        data,
+        updateQuery,
+        updatePath,
+        operationType,
+        idField,
+        mapResultToUpdate
+      });
     },
     ...options
   };
