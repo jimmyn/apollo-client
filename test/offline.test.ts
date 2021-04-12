@@ -1,5 +1,5 @@
 import {ApolloClient, InMemoryCache} from '@apollo/client';
-import {OperationTypes} from 'const';
+import {OperationTypes} from '../src/const';
 import 'cross-fetch/polyfill';
 import {
   getOperationFieldName,
@@ -8,7 +8,7 @@ import {
   updateCache,
   setConfig,
   offlineConfig
-} from 'offline';
+} from '../src/offline';
 import {
   createPostMutation,
   deletePostMutation,

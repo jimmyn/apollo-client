@@ -67,6 +67,7 @@
     "release-it": "^14.6.1",
     "tsdx": "^0.14.1",
     "tslib": "^2.2.0",
+    "react": "^17.0.2",
     "typescript": "^3.9.7"
   },
   "dependencies": {
