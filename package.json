@@ -39,6 +39,10 @@
     "bracketSpacing": false,
     "printWidth": 100
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "release-it": {
     "git": {
       "tagName": "v${version}",
