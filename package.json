@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
   "license": "MIT",
-  "name": "apollo-offline-hooks",
+  "name": "@microapps/apollo-client",
   "author": "Dmitriy Nevzorov",
-  "repository": "https://github.com/jimmyn/apollo-offline-hooks",
-  "description": "Apollo React Hooks with automatic cache updates",
+  "repository": "https://github.com/microapps/apollo-client",
+  "description": "Apollo Client drop-in replacement with automatic cache updates",
   "keywords": [
     "apollo",
     "apollo-react",
@@ -12,7 +12,7 @@
     "react",
     "react-hooks"
   ],
-  "module": "dist/apollo-offline-hooks.esm.js",
+  "module": "dist/apollo-client.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [

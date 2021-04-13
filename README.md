@@ -1,19 +1,19 @@
 # Apollo Offline Hooks
 
 A drop-in replacement
-for [@apollo/client](https://www.apollographql.com/docs/react/api/react-hooks/) with automatic cache
+for [@apollo/client](https://www.apollographql.com/docs/react/get-started/) with automatic cache
 updates. It will update apollo cache based on a mutation or subscription result.
 
 ## Install
 
 ```
-npm i apollo-offline-hooks @apollo/client --save
+npm i @microapps/apollo-client @apollo/client --save
 ```
 
 or
 
 ```
-yarn add apollo-offline-hooks @apollo/client
+yarn add @microapps/apollo-client @apollo/client
 ```
 
 ## Setup
@@ -21,7 +21,7 @@ yarn add apollo-offline-hooks @apollo/client
 ```typescript jsx
 import React from 'react';
 import {render} from 'react-dom';
-import {ApolloClient, InMemoryCache} from 'apollo-offline-hooks';
+import {ApolloClient, InMemoryCache} from '@microapps/apollo-client';
 
 const client = new ApolloClient({
   uri: 'localhost:8080',
@@ -49,7 +49,7 @@ For example this code
 
 ```typescript jsx
 import React from 'react';
-import {useMutation, useQuery} from 'apollo-offline-hooks';
+import {useMutation, useQuery} from '@microapps/apollo-client';
 import {createTodoMutation, todosQuery} from './api/operations';
 import {TodosList} from './TodosList';
 
@@ -129,7 +129,7 @@ And this code
 
 ```typescript jsx
 import React from 'react';
-import {useMutation} from 'apollo-offline-hooks';
+import {useMutation} from '@microapps/apollo-client';
 import {Todo} from './api/generated';
 import {deleteTodoMutation, todosQuery, updateTodoMutation} from './api/operations';
 
@@ -280,7 +280,7 @@ useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 Default configurations can be customized by calling `setOfflineConfig`
 
 ```typescript jsx
-import {setOfflineConfig} from 'apollo-offline-hooks';
+import {setOfflineConfig} from '@microapps/apollo-client';
 
 setOfflineConfig({
   getIdFieldFromObject(item: any) {
@@ -312,7 +312,7 @@ implementations
 Example
 
 ```typescript
-import {updateApolloCache} from 'apollo-offline-hooks';
+import {updateApolloCache} from '@microapps/apollo-client';
 
 const newTodo = {
   __typename: 'Todo',
