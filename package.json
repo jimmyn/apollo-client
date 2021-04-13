@@ -48,7 +48,7 @@
       "release": true
     },
     "npm": {
-      "publish": false
+      "publish": true
     },
     "hooks": {
       "before:init": [
@@ -64,7 +64,7 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "husky": "^6.0.0",
-    "release-it": "^14.6.1",
+    "release-it": "^13.6.5",
     "tsdx": "^0.14.1",
     "tslib": "^2.2.0",
     "react": "^17.0.2",
