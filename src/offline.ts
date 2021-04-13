@@ -79,7 +79,6 @@ export const getUpdater = <T extends Item>(
       };
     case OperationTypes.UPDATE:
       return (currentValue, newItem) => {
-        console.log({currentValue, newItem});
         if (Array.isArray(currentValue)) {
           return newItem
             ? currentValue.map(item =>
