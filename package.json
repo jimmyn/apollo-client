@@ -53,7 +53,7 @@
       "release": true
     },
     "npm": {
-      "publish": false
+      "publish": true
     },
     "hooks": {
       "before:init": [
