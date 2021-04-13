@@ -1,4 +1,4 @@
-# Apollo Offline Hooks
+# Apollo Client
 
 A drop-in replacement
 for [@apollo/client](https://www.apollographql.com/docs/react/get-started/) with automatic cache
