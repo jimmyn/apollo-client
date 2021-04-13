@@ -7,13 +7,13 @@ updates. It will update apollo cache based on a mutation or subscription result.
 ## Install
 
 ```
-npm i @microapps/apollo-client @apollo/client --save
+npm i @jimmyn/apollo-client @apollo/client --save
 ```
 
 or
 
 ```
-yarn add @microapps/apollo-client @apollo/client
+yarn add @jimmyn/apollo-client @apollo/client
 ```
 
 ## Setup
@@ -21,7 +21,7 @@ yarn add @microapps/apollo-client @apollo/client
 ```typescript jsx
 import React from 'react';
 import {render} from 'react-dom';
-import {ApolloClient, InMemoryCache} from '@microapps/apollo-client';
+import {ApolloClient, InMemoryCache} from '@jimmyn/apollo-client';
 
 const client = new ApolloClient({
   uri: 'localhost:8080',
@@ -49,7 +49,7 @@ For example this code
 
 ```typescript jsx
 import React from 'react';
-import {useMutation, useQuery} from '@microapps/apollo-client';
+import {useMutation, useQuery} from '@jimmyn/apollo-client';
 import {createTodoMutation, todosQuery} from './api/operations';
 import {TodosList} from './TodosList';
 
@@ -129,7 +129,7 @@ And this code
 
 ```typescript jsx
 import React from 'react';
-import {useMutation} from '@microapps/apollo-client';
+import {useMutation} from '@jimmyn/apollo-client';
 import {Todo} from './api/generated';
 import {deleteTodoMutation, todosQuery, updateTodoMutation} from './api/operations';
 
@@ -280,7 +280,7 @@ useSubscription(onTodoUpdate, {updateQuery: todosQuery});
 Default configurations can be customized by calling `setOfflineConfig`
 
 ```typescript jsx
-import {setOfflineConfig} from '@microapps/apollo-client';
+import {setOfflineConfig} from '@jimmyn/apollo-client';
 
 setOfflineConfig({
   getIdFieldFromObject(item: any) {
@@ -312,7 +312,7 @@ implementations
 Example
 
 ```typescript
-import {updateApolloCache} from '@microapps/apollo-client';
+import {updateApolloCache} from '@jimmyn/apollo-client';
 
 const newTodo = {
   __typename: 'Todo',
