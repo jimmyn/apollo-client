@@ -1,9 +1,9 @@
 {
   "version": "1.0.0",
   "license": "MIT",
-  "name": "@monei/apollo-client",
+  "name": "@microapps/apollo-client",
   "author": "Dmitriy Nevzorov",
-  "repository": "https://github.com/monei/apollo-client",
+  "repository": "https://github.com/microapps/apollo-client",
   "description": "Apollo Client drop-in replacement with automatic cache updates",
   "keywords": [
     "apollo",
